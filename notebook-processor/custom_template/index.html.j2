@@ -1,0 +1,194 @@
+{% extends 'classic/index.html.j2' %}
+
+{% block html_head %}
+{{ super() }}
+<style>
+  :root {
+    --jp-layout-color0: #f0f2fe;
+  }
+
+  .jp-Notebook .jp-Cell .jp-InputPrompt {
+    cursor: default; /* Set to the default pointer instead of "move" */
+  }
+
+  body {
+    background-color: #0F172A;
+  }
+
+  #notebook-container {
+    background-color: #222736;
+  }
+
+  .rendered_html {
+    color: #E2E8F0 !important; /* Light text color for dark mode */
+  }
+
+  .input_prompt {
+    display: none; /* Hide the [In] Jupyter cell number */
+  }
+
+  .output_prompt {
+    display: none; /* Hide the [Out] Jupyter cell number */
+  }
+
+  .prompt {
+    display: none; /* Hide the left-hand side output divs that take up width */
+    min-width: 0px;
+    padding: 0px;
+    width: 0px;
+  }
+
+  div.output_subarea {
+    max-width: none; /* Makes the widget take up full width of output area */
+  }
+
+  .output_stderr {
+    display: none; /* Hide stderr output in the notebook */
+  }
+
+  /* CODE STYLES */
+  /* The code cell background */
+  div.input_area {
+    background-color: #2E2E2E;
+  }
+
+  span.nn {
+    color: #56A3FF;
+  }
+
+  .highlight .nn {
+    color: #56A3FF;
+  }
+
+  span.nf {
+    color: #56A3FF;
+  }
+
+  .highlight .nf {
+    color: #56A3FF;
+  }
+
+  span.n {
+    color: #FFFFFF;
+  }
+
+  .highlight .n {
+    color: #FFFFFF;
+  }
+
+  span.o {
+    color: #FFFFFF;
+  }
+
+  .highlight .o {
+    color: #FFFFFF;
+  }
+
+  span.s1 {
+    color: #FA7DD0;
+  }
+
+  .highlight .s1 {
+    color: #FA7DD0;
+  }
+
+  span.s2 {
+    color: #FD8686;
+  }
+
+  .highlight .s2 {
+    color: #FD8686;
+  }
+
+  span.kn {
+    color: #05BF06;
+  }
+
+  .highlight .kn {
+    color: #05BF06;
+  }
+
+  span.k {
+    color: #05BF06;
+  }
+
+  .highlight .k {
+    color: #05BF06;
+  }
+
+  span.mi {
+    color: #BBB;
+  }
+
+  .highlight .mi {
+    color: #BBB;
+  }
+
+  span.p {
+    color: #FFF;
+  }
+
+  .highlight .p {
+    color: #FFF;
+  }
+
+  div.output_area pre {
+    color: #FFF;
+  }
+
+  .rendered_html table {
+    color: #FFF;
+  }
+
+  /* Table row alternating colors */
+  .rendered_html tbody tr:nth-child(odd) {
+    background: #282F3E;
+  }
+  .rendered_html tbody tr:nth-child(even) {
+    background: #1A1E2B;
+  }
+  /* Add some padding to table cells for better readability */
+  .rendered_html td, .rendered_html th {
+    padding: 8px 12px;
+  }
+
+</style>
+
+<script>
+  // Tag Guidance website widget iframes
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check localStorage and add class to notebook
+    if (localStorage.getItem('guidance-website-theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+    
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === 1) { // Element node
+            const iframe = node.querySelector?.('iframe[srcdoc]') || 
+                          (node.tagName === 'IFRAME' && node.srcdoc ? node : null);
+            if (iframe) {
+              iframe.setAttribute('data-guidance-web', 'true');
+              // Send theme info to widget after it loads
+              iframe.addEventListener('load', () => {
+                setTimeout(() => {
+                  iframe.contentWindow.postMessage({ type: 'theme', theme: 'dark' }, '*');
+                }, 100);
+              });
+            }
+          }
+        });
+      });
+    });
+    
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    // Tag any existing iframes and send theme
+    document.querySelectorAll('iframe[srcdoc]').forEach(iframe => {
+      iframe.setAttribute('data-guidance-web', 'true');
+      iframe.contentWindow.postMessage({ type: 'theme', theme: 'dark' }, '*');
+    });
+  });
+</script>
+{% endblock html_head %}

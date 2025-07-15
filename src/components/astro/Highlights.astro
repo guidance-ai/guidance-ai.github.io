@@ -1,0 +1,42 @@
+---
+import FeatureCard from "./FeatureCard.astro";
+---
+
+<section class="mt-20 px-6">
+    <div
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
+    >
+        <FeatureCard
+            icon="🧠"
+            title="Granular LLM Control"
+            description="Structured outputs, regex constraints, and CFGs in pure Python."
+            textColor="#D4F5D0"
+            borderColor="#D4F5D0"
+            glowColor="#d4f5d055"
+            bgFrom="#d4f5d014"
+            bgTo="#d4f5d030"
+        />
+
+        <FeatureCard
+            icon="⚡"
+            title="Cost & Latency Efficient"
+            description="Control decoding directly. Avoid chaining and slow retries."
+            textColor="#978BFF"
+            borderColor="#978BFF"
+            glowColor="#978BFF"
+            bgFrom="#978BFF"
+            bgTo="#C4BEFF"
+        />
+
+        <FeatureCard
+            icon="🛠️"
+            title="Production-Ready"
+            description="Stateless programs. Compatible with OpenAI, llama.cpp, Transformers."
+            textColor="#A8DBFA"
+            borderColor="#A8DBFA"
+            glowColor="#a8dbfa55"
+            bgFrom="#a8dbfa18"
+            bgTo="#a8dbfa30"
+        />
+    </div>
+</section>

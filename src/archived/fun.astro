@@ -1,0 +1,411 @@
+---
+import NavBar from '../components/astro/NavBar.astro';
+import Layout from '../layouts/Layout.astro';
+
+
+// Sample performance data for visualization
+const performanceData = [
+  { step: 'Start', traditional: 100, guidance: 100 },
+  { step: 'Parse', traditional: 85, guidance: 45 },
+  { step: 'Generate', traditional: 82, guidance: 42 },
+  { step: 'Complete', traditional: 78, guidance: 28 }
+];
+
+// Sample constraint types for visualization
+const constraintTypes = [
+  { name: "Select", description: "Choose from predefined options", icon: "🔍", color: "bg-blue-500" },
+  { name: "Regex", description: "Match specific patterns", icon: "🧩", color: "bg-purple-500" },
+  { name: "CFG", description: "Define complex grammars", icon: "🌳", color: "bg-green-500" }
+];
+
+// Sample code examples
+const codeExamples = [
+  {
+    title: "Simple Selection",
+    code: `from guidance import models, select
+
+# Load a model
+llama2 = models.LlamaCpp("path/to/model")
+
+# Create a constraint
+result = llama2 + "Do you want a joke or a poem? A " + select(['joke', 'poem'])
+# Output: Do you want a joke or a poem? A poem`,
+    description: "Constrain generation to choose from a set of options"
+  },
+  {
+    title: "Regex Patterns",
+    code: `# Math problem with numeric answer
+lm = llama2 + 'Question: Luke has ten balls. He gives three to his brother.\\n'
+lm += 'How many balls does he have left?\\n'
+lm += 'Answer: ' + gen(regex='\\d+')
+# Output: Answer: 7`,
+    description: "Force the model to generate content matching a specific pattern"
+  },
+  {
+    title: "Tool Integration",
+    code: `@guidance
+def calculator(lm, expression):
+    result = eval(expression)  # Be careful with eval in production!
+    lm += f' = {result}'
+    return lm
+
+calculator_tool = Tool(calculator)
+
+lm = llama2 + 'calculator(3 * 3)' + gen(tools=[calculator_tool])
+# Output: calculator(3 * 3) = 9`,
+    description: "Seamlessly integrate tools into generation"
+  }
+];
+
+// Interactive demo function - simplified for Astro
+function guidanceDemo(inputText: string, constraint: string, constraintValue: string): string {
+  if (!inputText) return "";
+  
+  let result = inputText;
+  
+  if (constraint === "select" && constraintValue) {
+    const options = constraintValue.split(',').map(item => item.trim());
+    // Simulate selection constraint (random choice for demo)
+    result += " " + options[Math.floor(Math.random() * options.length)];
+  } else if (constraint === "regex" && constraintValue) {
+    // Simulate regex constraint with a sample matching value
+    if (constraintValue === "\\d+") {
+      result += " " + Math.floor(Math.random() * 100);
+    } else if (constraintValue === "[A-Z][a-z]+") {
+      const names = ["John", "Mary", "Robert", "Sarah", "Michael"];
+      result += " " + names[Math.floor(Math.random() * names.length)];
+    } else {
+      result += " [regex-matched-content]";
+    }
+  } else if (constraint === "stop" && constraintValue) {
+    // Simulate stop constraint
+    result += " This is generated text that will stop";
+    if (result.length > 30) {
+      result = result.substring(0, result.lastIndexOf(constraintValue) + constraintValue.length);
+    }
+  } else {
+    result += " [unconstrained-generation]";
+  }
+  
+  return result;
+}
+
+// Get query parameters
+const url = new URL(Astro.request.url);
+const inputText = url.searchParams.get("inputText") || "";
+const constraint = url.searchParams.get("constraint") || "";
+const constraintValue = url.searchParams.get("constraintValue") || "";
+const result = guidanceDemo(inputText, constraint, constraintValue);
+---
+
+<Layout title="Guidance AI">
+  <NavBar />
+  <main>
+    <!-- Hero Section -->
+    <div class="py-12 bg-gray-50 text-center">
+      <div class="container mx-auto px-4">
+        <h1 class="text-5xl font-bold text-gray-900 mb-2">
+          <span>Guidance</span>
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          An efficient programming paradigm for steering language models with advanced constraints and controls
+        </p>
+      </div>
+    </div>
+    
+    <!-- What is Guidance Section -->
+    <div class="py-12 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-6">What is Guidance? 🤔</h2>
+        <p class="text-lg text-gray-600 mb-8">
+          Guidance is a powerful programming paradigm that gives you precise control over language model outputs while reducing costs and improving quality.
+        </p>
+        
+        <div class="grid md:grid-cols-3 gap-6">
+          {constraintTypes.map((type: { name: string; description: string; icon: string; color: string }) => (
+            <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+              <div class={`w-12 h-12 rounded-full ${type.color} text-white flex items-center justify-center text-2xl mb-4`}>
+                {type.icon}
+              </div>
+              <h3 class="text-xl font-bold mb-2">{type.name}</h3>
+              <p class="text-gray-600">{type.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+    
+    <!-- Why Use Guidance Section -->
+    <div class="py-12 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-6">Why Use Guidance? 🚀</h2>
+        <p class="text-lg text-gray-600 mb-8">
+          Efficiency Comparison
+        </p>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Graph Visualization -->
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="text-xl font-semibold mb-4">Efficiency Comparison</h3>
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-medium">Start</span>
+              <span class="font-medium">Parse</span>
+              <span class="font-medium">Generate</span>
+              <span class="font-medium">Complete</span>
+            </div>
+            <div class="mb-6 h-8 grid grid-cols-4 gap-1">
+              <div class="relative h-8">
+                <div class="absolute bottom-0 inset-x-0 h-6 bg-blue-400"></div>
+                <div class="absolute bottom-0 inset-x-0 h-6 bg-green-400 w-1/2 left-1/4"></div>
+              </div>
+              <div class="relative h-8">
+                <div class="absolute bottom-0 inset-x-0 h-6 bg-blue-400 h-5"></div>
+                <div class="absolute bottom-0 inset-x-0 bg-green-400 h-3 w-1/2 left-1/4"></div>
+              </div>
+              <div class="relative h-8">
+                <div class="absolute bottom-0 inset-x-0 h-6 bg-blue-400 h-5"></div>
+                <div class="absolute bottom-0 inset-x-0 bg-green-400 h-3 w-1/2 left-1/4"></div>
+              </div>
+              <div class="relative h-8">
+                <div class="absolute bottom-0 inset-x-0 h-6 bg-blue-400 h-4"></div>
+                <div class="absolute bottom-0 inset-x-0 bg-green-400 h-2 w-1/2 left-1/4"></div>
+              </div>
+            </div>
+            <div class="flex justify-center space-x-6">
+              <div class="flex items-center">
+                <div class="w-3 h-3 bg-blue-400 rounded-sm mr-2"></div>
+                <span class="text-sm">Traditional</span>
+              </div>
+              <div class="flex items-center">
+                <div class="w-3 h-3 bg-green-400 rounded-sm mr-2"></div>
+                <span class="text-sm">Guidance</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Key Benefits -->
+          <div>
+            <h3 class="text-xl font-semibold mb-4">Key Benefits</h3>
+            <ul class="space-y-4">
+              <li class="flex items-start">
+                <div class="mr-3 mt-1">✓</div>
+                <div>
+                  <p class="font-medium">Constrained Generation</p>
+                  <p class="text-gray-600">Control outputs with selects, regex, and context-free grammars</p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div class="mr-3 mt-1">✓</div>
+                <div>
+                  <p class="font-medium">Token Healing</p>
+                  <p class="text-gray-600">No more token boundary issues - work with text, not tokens</p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div class="mr-3 mt-1">✓</div>
+                <div>
+                  <p class="font-medium">Seamless Tool Integration</p>
+                  <p class="text-gray-600">Interleave control and generation with automatic tool calling</p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <div class="mr-3 mt-1">✓</div>
+                <div>
+                  <p class="font-medium">Multi-Model Support</p>
+                  <p class="text-gray-600">Works with OpenAI, Anthropic, Gemini, Transformers, and more</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- How It Works Section -->
+    <div class="py-12 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-6">How It Works 👨‍💻</h2>
+        
+        <!-- Simple Selection -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-3">Simple Selection</h3>
+          <div class="bg-gray-50 rounded-lg overflow-hidden">
+            <pre class="bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto text-sm font-mono">from guidance import models, select
+
+# Load a model
+llama2 = models.LlamaCpp("path/to/model")
+
+# Create a constraint
+result = llama2 + "Do you want a joke or a poem? A " + select(['joke', 'poem'])
+# Output: Do you want a joke or a poem? A poem</pre>
+          </div>
+          <p class="mt-3 text-gray-600">Constrain generation to choose from a set of options</p>
+        </div>
+        
+        <!-- Regex Patterns -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-3">Regex Patterns</h3>
+          <div class="bg-gray-50 rounded-lg overflow-hidden">
+            <pre class="bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto text-sm font-mono"># Math problem with numeric answer
+lm = llama2 + 'Question: Luke has ten balls. He gives three to his brother.\n'
+lm += 'How many balls does he have left?\n'
+lm += 'Answer: ' + gen(regex='\d+')
+# Output: Answer: 7</pre>
+          </div>
+          <p class="mt-3 text-gray-600">Force the model to generate content matching a specific pattern</p>
+        </div>
+        
+        <!-- Tool Integration -->
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold mb-3">Tool Integration</h3>
+          <div class="bg-gray-50 rounded-lg overflow-hidden">
+            <pre class="bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto text-sm font-mono">@guidance
+def calculator(lm, expression):
+    result = eval(expression)  # Be careful with eval in production!
+    lm += f' = {result}'
+    return lm
+
+calculator_tool = Tool(calculator)
+
+lm = llama2 + 'calculator(3 * 3)' + gen(tools=[calculator_tool])
+# Output: calculator(3 * 3) = 9</pre>
+          </div>
+          <p class="mt-3 text-gray-600">Seamlessly integrate tools into generation</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Try It Yourself Section -->
+    <div class="py-12 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-6">Try It Yourself 🎮</h2>
+        <p class="text-lg text-gray-600 mb-8">
+          See how different constraints affect language model generation by playing with this interactive demo.
+        </p>
+        
+        <form method="GET" class="bg-white p-6 rounded-lg shadow-sm">
+          <div class="mb-4">
+            <label class="block mb-2 font-medium">Input Prompt:</label>
+            <input 
+              type="text"
+              name="inputText" 
+              value={inputText}
+              class="w-full border border-gray-300 rounded px-3 py-2" 
+              placeholder="e.g. The color of the sky is"
+            />
+          </div>
+          
+          <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block mb-2 font-medium">Constraint Type:</label>
+              <select name="constraint" class="w-full border border-gray-300 rounded px-3 py-2">
+                <option value="" selected={constraint === ""}>None (Unconstrained)</option>
+                <option value="select" selected={constraint === "select"}>Select (Options)</option>
+                <option value="regex" selected={constraint === "regex"}>Regex Pattern</option>
+                <option value="stop" selected={constraint === "stop"}>Stop Sequence</option>
+              </select>
+            </div>
+            
+            <div>
+              <label class="block mb-2 font-medium">Constraint Value:</label>
+              <input 
+                type="text"
+                name="constraintValue" 
+                value={constraintValue}
+                class="w-full border border-gray-300 rounded px-3 py-2" 
+                placeholder={constraint === "select" ? "blue,red,green" : 
+                           constraint === "regex" ? "\\d+ or [A-Z][a-z]+" : 
+                           constraint === "stop" ? "." : 
+                           "Enter value based on constraint type"}
+              />
+            </div>
+          </div>
+          
+          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            Generate!
+          </button>
+          
+          {result && (
+            <div class="mt-6 bg-gray-50 border-l-4 border-blue-500 p-4 rounded">
+              <p class="font-medium mb-2">Generated Output:</p>
+              <div class="bg-white p-3 border border-gray-200 rounded font-mono">
+                <span class="text-gray-500">{inputText}</span>
+                <span class="text-blue-600 font-medium">{result.substring(inputText.length)}</span>
+              </div>
+              <p class="mt-4 text-sm text-gray-500">* This is a simulation for demonstration purposes. Actual results may vary.</p>
+            </div>
+          )}
+        </form>
+      </div>
+    </div>
+    
+    <!-- Token Healing Section -->
+    <div class="py-12 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-6">Spotlight: Token Healing 🧩</h2>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-xl font-semibold mb-4">The Problem</h3>
+            <p class="text-gray-600 mb-4">
+              Traditional LLM prompting often breaks at token boundaries, causing unexpected completions.
+            </p>
+            
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded mb-6">
+              <p class="text-sm text-gray-700">
+                <strong>Example:</strong> When a prompt ends with "program", the model might continue with " is" instead of "ming" because "program" and "ming" are separate tokens.
+              </p>
+            </div>
+            
+            <div class="bg-gray-900 text-gray-200 p-4 rounded text-sm font-mono">
+              <p>Prompt: "I love to pro"</p>
+              <p class="text-red-400">Output: "I love to pro vide"</p>
+              <p class="text-gray-400 mt-2"># Expected: "I love to program"</p>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold mb-4">Guidance Solution</h3>
+            <p class="text-gray-600 mb-4">
+              Token healing automatically handles these boundaries for you, allowing natural text completion.
+            </p>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded mb-6">
+              <p class="text-sm text-gray-700">
+                <strong>How it works:</strong> Guidance handles token boundaries intelligently, ensuring natural continuations regardless of where tokens break.
+              </p>
+            </div>
+            
+            <div class="bg-gray-900 text-gray-200 p-4 rounded text-sm font-mono">
+              <p>Guidance: "I love to pro"</p>
+              <p class="text-green-400">Output: "I love to program"</p>
+              <p class="text-gray-400 mt-2"># Token healing ensures proper completion</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Get Started CTA -->
+    <div class="py-12 bg-gray-50 text-center">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-4">Ready to Get Started? 🚀</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+          Join thousands of developers using Guidance to build better LLM applications with less code and more control.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <a href="https://github.com/microsoft/guidance" class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition w-full sm:w-auto text-center">
+            GitHub Repository
+          </a>
+          <a href="https://pypi.org/project/guidance/" class="bg-white text-blue-600 border border-blue-200 px-6 py-3 rounded hover:border-blue-300 transition w-full sm:w-auto text-center">
+            Install via pip
+          </a>
+          <a href="https://microsoft.github.io/guidance/" class="bg-white text-gray-600 border border-gray-200 px-6 py-3 rounded hover:border-gray-300 transition w-full sm:w-auto text-center">
+            Documentation
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>

@@ -1,0 +1,35 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/astro/Header.astro";
+import Highlights from "../components/astro/Highlights.astro";
+import Heroes from "../components/astro/Heroes.astro";
+import CodeDemo from "../components/astro/CodeDemo.astro"
+import CardGrid from "../components/astro/CardGrid.astro"
+
+import {
+  BookRegular,
+  CodeRegular,
+  RocketRegular,
+  SpatulaSpoonRegular,
+} from "@fluentui/react-icons";
+---
+
+<Layout title="Guidance">
+  <Header />
+
+  <main
+    class="flex flex-col min-h-screen bg-[#10162a] text-white px-6 py-12 space-y-20"
+  >
+    <Heroes />
+
+    <Highlights />
+
+
+    <CodeDemo />
+
+    <!-- <hr class="h-0.5 border-0 bg-[linear-gradient(to_right,_#BEF7C7,_#85C6F7,_#7178E6)] rounded-full" />
+
+    <CardGrid /> -->
+
+  </main>
+</Layout>

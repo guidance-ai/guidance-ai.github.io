@@ -1,0 +1,40 @@
+---
+// AnnouncementCard.astro
+export interface Props {
+  tag?: string
+  title: string
+  description: string
+  linkText?: string
+  linkHref?: string
+}
+
+const {
+  tag = "New Release",
+  title,
+  description,
+  linkText = "View Quickstart Guide",
+  linkHref = "#"
+} = Astro.props;
+---
+
+<div
+  class="rounded-xl p-6 bg-gradient-to-br from-[#d4f5d030] via-[#a8dbfa20] to-[#635fe230] border border-[#A8DBFA] shadow-[0_0_12px_#a8dbfa55] backdrop-blur-md transition"
+>
+  <!-- Pill Tag -->
+  <div class="bg-[#a8dbfa33] text-[#A8DBFA] font-medium rounded-full py-1 px-4 w-fit text-sm tracking-wide">
+    {tag}
+  </div>
+
+  <!-- Title -->
+  <h2 class="text-xl font-bold text-[#A8DBFA] mt-4">{title}</h2>
+
+  <!-- Description -->
+  <p class="text-gray-200 mt-2 max-w-xl">{description}</p>
+
+  <!-- Link -->
+  <div class="mt-4">
+    <a href={linkHref} class="text-[#A8DBFA] font-medium hover:underline text-sm flex items-center gap-1">
+      {linkText} <span class="text-lg">›</span>
+    </a>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+---
+import InfoCard from "./InfoCard.astro";
+import {
+    SpatulaSpoonRegular,
+    BookRegular,
+    CodeRegular,
+} from "@fluentui/react-icons";
+---
+<section class="w-full px-[24px] lg:px-[100px]">
+    <div
+      class="max-w-[1200px] mx-auto grid gap-6 place-items-center"
+      style="grid-template-columns: repeat(auto-fit, minmax(588px, 1fr));"
+    >
+    <InfoCard
+        icon="🚀"
+        title="Quickstart"
+        description="Get up and running in minutes. Learn the basics of Guidance and write your first program."
+        links={[
+            { label: "Installation", href: "/docs/todo" },
+            { label: "Basic Usage", href: "/docs/todo" },
+            { label: "First Steps", href: "/docs/todo" },
+        ]}
+        color="#DB2877"
+    />
+
+    <InfoCard
+        icon= "🚀"
+        title="Cookbook"
+        description="Explore practical examples and recipes for common use cases and patterns."
+        links={[
+            { label: "Basic Generation", href: "/docs/todo" },
+            { label: "Using Constraints", href: "/docs/todo" },
+            { label: "Tool Integration", href: "/docs/todo" },
+        ]}
+        color="#9334E9"
+    />
+
+    <InfoCard
+        icon= "🚀"
+        title="Tutorials"
+        description="Deep dive into concepts with comprehensive guides and best practices."
+        links={[
+            { label: "Constrained Decoding", href: "/docs/todo" },
+            { label: "Token Healing", href: "/docs/todo" },
+            { label: "State Management", href: "/docs/todo" },
+        ]}
+        color="#2463EB"
+    />
+
+    <InfoCard
+        icon= "🚀"
+        title="API Reference"
+        description="Detailed technical documentation for models, components, and integrations."
+        links={[
+            { label: "Models API", href: "/docs/todo" },
+            { label: "Generation Functions", href: "/docs/todo" },
+            { label: "Tool Components", href: "/docs/todo" },
+        ]}
+        color="#1BA843"
+    />
+</div>
+</section>

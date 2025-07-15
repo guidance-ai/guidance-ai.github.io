@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from "../components/astro/Header.astro";
+import BenchDashboard from '../components/react/BenchDashboard.jsx';
+---
+
+<Layout title="Benchmark">
+  <Header />
+  <BenchDashboard client:only="react" />
+</Layout>

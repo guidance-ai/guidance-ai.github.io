@@ -1,0 +1,41 @@
+---
+interface LinkItem {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  icon: any;
+  title: string;
+  description: string;
+  links: LinkItem[];
+  color?: string;
+}
+
+const {
+  icon,
+  title,
+  description,
+  links,
+  color = "#A8DBFA"
+} = Astro.props;
+---
+
+<div
+  class="backdrop-blur-md p-6 rounded-xl border  text-white w-[588px] h-[240px]"
+  style={`border-color: ${color}; background-image: linear-gradient(135deg, ${color}22 0%, #0f172a 100%);`}
+>
+  <div class="flex items-center">
+    <span class="text-2xl" style={`color: ${color}`}>{icon}</span>
+    <h2 class="text-lg font-bold ml-3" style={`color: ${color}`}>{title}</h2>
+  </div>
+  <p class="text-gray-200 mt-2">{description}</p>
+  <ul class="list-none mt-4 ml-3 space-y-2">
+    {links.map(link => (
+      <li class="flex items-center">
+        <span class="mr-2 text-gray-400">›</span>
+        <a href={link.href} class="text-gray-300 hover:underline">{link.label}</a>
+      </li>
+    ))}
+  </ul>
+</div>

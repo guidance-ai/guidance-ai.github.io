@@ -1,0 +1,9 @@
+env/
+notebook-processor/**/*.ipynb
+notebook-processor/**/*.html
+.ipynb_checkpoints/
+.DS_Store
+node_modules
+# Astro
+dist/
+.astro/

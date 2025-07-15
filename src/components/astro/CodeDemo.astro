@@ -1,0 +1,98 @@
+---
+const codeExamples = {
+  Select: `# Select: User chooses an option
+gpt + f"Pick one: {select(['red', 'blue', 'green'])}"`,
+
+  Regex: `# Regex-constrained generation
+lm += gen(regex='\\d{2,4}')  # e.g. year or number`,
+
+  "Tool Use": `# Tool use: auto-invoked
+@guidance
+def add(lm, a, b):
+  lm += f" = {int(a) + int(b)}"
+  return lm
+lm += gen(tools=[add])`,
+
+  JSON: `# JSON: structured output
+def make_profile():
+  return f'''{
+  "name": "{gen('name', stop='"')}",
+  "age": {gen('age', regex='\\d+', stop=',')}
+}'''`,
+
+  Grammar: `# Grammar: recursive math
+def expression():
+  return select([number(), expression() + '+' + expression()])
+lm += expression()`
+};
+---
+
+<section class="my-20 px-6 max-w-5xl mx-auto" id="code-demo">
+    <div
+    class="rounded-lg overflow-hidden shadow-lg bg-gradient-to-br from-[#d4f5d020] via-[#a8dbfa20] to-[#635fe220] border border-[#A8DBFA] w-[800px] h-[400px]"
+  >
+  
+    <!-- Header Bar with Dots + Tabs -->
+    <div class="flex items-center justify-between px-4 py-2 bg-[#1e293b] border-b border-[#334155]">
+      <!-- Dots -->
+      <div class="flex gap-2">
+        <span class="w-3 h-3 rounded-full bg-red-400"></span>
+        <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+        <span class="w-3 h-3 rounded-full bg-green-400"></span>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex gap-2">
+        {Object.keys(codeExamples).map((label, i) => (
+          <button
+            type="button"
+            class={`code-tab px-3 py-1 rounded-md text-xs font-mono tracking-wide ${
+              i === 0
+                ? 'bg-[#A8DBFA] text-[#0f172a]'
+                : 'bg-[#1e293b] text-gray-300 hover:bg-[#334155]'
+            } transition`}
+            data-index={i}
+            aria-selected={i === 0 ? "true" : "false"}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <div class="w-6"></div> <!-- Placeholder to balance layout -->
+    </div>
+
+    <!-- Code display -->
+    <div class="relative">
+      {Object.entries(codeExamples).map(([label, content], i) => (
+        <pre
+          class={`code-block ${i === 0 ? "block" : "hidden"} text-green-300 text-sm p-4 font-mono`}
+          data-index={i}
+        ><code>{content}</code></pre>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- JS for toggling -->
+<script is:inline>
+  const tabs = document.querySelectorAll('#code-demo .code-tab');
+  const blocks = document.querySelectorAll('#code-demo .code-block');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const index = tab.dataset.index;
+
+      tabs.forEach(t => {
+        t.classList.remove('bg-[#A8DBFA]', 'text-[#0f172a]');
+        t.classList.add('bg-[#1e293b]', 'text-gray-300');
+      });
+
+      blocks.forEach(b => b.classList.add('hidden'));
+
+      tab.classList.remove('bg-[#1e293b]', 'text-gray-300');
+      tab.classList.add('bg-[#A8DBFA]', 'text-[#0f172a]');
+      blocks[index].classList.remove('hidden');
+    });
+  });
+</script>

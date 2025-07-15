@@ -1,0 +1,14 @@
+---
+import NavBar from '../components/astro/NavBar.astro';
+import Layout from '../layouts/Layout.astro';
+import DocsLayout from '../components/react/DocsLayout';
+import Header from '../components/astro/Header.astro';
+---
+
+
+<Layout title="Docs">
+  <div class="h-screen flex flex-col overflow-hidden">
+    <Header />
+    <DocsLayout client:load />
+  </div>
+</Layout>

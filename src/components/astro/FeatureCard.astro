@@ -1,0 +1,34 @@
+---
+// FeatureCard.astro
+export interface Props {
+  icon: string
+  title: string
+  description: string
+  textColor: string
+  borderColor: string
+  glowColor: string
+  bgFrom: string
+  bgTo: string
+}
+
+const {
+  icon,
+  title,
+  description,
+  textColor,
+  borderColor,
+  glowColor,
+  bgFrom,
+  bgTo
+} = Astro.props;
+---
+
+<div class={`rounded-xl p-6 bg-gradient-to-br from-[${bgFrom}] to-[${bgTo}] border`} style={`border-color: ${borderColor}; box-shadow: 0 0 15px ${glowColor};`}>
+
+  <h3 class={`text-lg font-bold flex items-center`} style={`color: ${textColor}`}>
+    <span class="mr-2 text-xl">{icon}</span> {title}
+  </h3>
+  <p class="text-gray-200 mt-2">
+    {description}
+  </p>
+</div>
