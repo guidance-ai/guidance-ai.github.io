@@ -1,0 +1,89 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/astro/Header.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
+}
+type Props = CollectionEntry<'blog'>;
+
+const post = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={`${post.data.title} - Guidance Blog`}>
+  <Header />
+  
+  <main class="flex flex-col min-h-screen bg-[#10162a] text-white px-6 py-12">
+    <article class="max-w-4xl mx-auto w-full">
+      <div class="mb-8">
+        <a href="/blog" class="text-[#85C6F7] hover:text-[#BEF7C7] transition-colors">
+          ← Back to blog
+        </a>
+      </div>
+      
+      {post.data.heroImage && (
+        <img 
+          src={post.data.heroImage} 
+          alt={post.data.title}
+          class="w-full h-96 object-cover rounded-lg mb-8"
+        />
+      )}
+      
+      <header class="mb-8">
+        <h1 class="text-5xl font-bold mb-4 pb-2 bg-gradient-to-r from-[#BEF7C7] to-[#7178E6] bg-clip-text text-transparent">
+          {post.data.title}
+        </h1>
+        
+        <div class="flex items-center gap-4 text-gray-400">
+          <span>{post.data.author}</span>
+          <span>•</span>
+          <time>
+            {post.data.pubDate.toLocaleDateString('en-us', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}
+          </time>
+          {post.data.updatedDate && (
+            <>
+              <span>•</span>
+              <span>Updated: {post.data.updatedDate.toLocaleDateString('en-us', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}</span>
+            </>
+          )}
+        </div>
+        
+        {post.data.tags && post.data.tags.length > 0 && (
+          <div class="mt-4 flex flex-wrap gap-2">
+            {post.data.tags.map((tag) => (
+              <span class="px-3 py-1 bg-[#172034] text-sm rounded-full text-[#85C6F7]">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </header>
+      
+      <div class="prose prose-invert prose-lg max-w-none
+        prose-headings:text-[#BEF7C7]
+        prose-a:text-[#85C6F7] prose-a:no-underline hover:prose-a:text-[#BEF7C7]
+        prose-strong:text-white
+        prose-code:text-[#BEF7C7] prose-code:bg-[#172034] prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+        prose-pre:bg-[#172034] prose-pre:border prose-pre:border-[#2a3450]
+        [&_pre_code]:bg-transparent [&_pre_code]:p-0
+        prose-blockquote:border-l-[#7178E6] prose-blockquote:text-gray-300
+        prose-hr:border-gray-700">
+        <Content />
+      </div>
+    </article>
+  </main>
+</Layout>
