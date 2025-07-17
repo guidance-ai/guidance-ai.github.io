@@ -98,45 +98,45 @@ function SideNav({
   return (
     <div className="w-64 bg-[var(--bg-secondary)] text-[var(--text-primary)] shadow-md h-full p-4 overflow-y-auto flex flex-col">
       <NavAccordion iconComponent={rocketIcon} title="Quick Start" defaultOpen={isInQuickStart}>
-      <NotebookLinks
-       links={quickStartLinks}
-       onNavigate={onNavigate}
-       activeHref={activeHref}
-       setActiveHref={setActiveHref}
-/>
-
+        <NotebookLinks
+        links={quickStartLinks}
+        onNavigate={onNavigate}
+        activeHref={activeHref}
+        setActiveHref={setActiveHref}
+        />
       </NavAccordion>
 
       <div className="mt-3">
         <NavAccordion iconComponent={bookIcon} title="Tutorials" defaultOpen={isInTutorials}>
-        <NotebookLinks
-         links={tutorialLinks}
-         onNavigate={onNavigate}
-         activeHref={activeHref}
-         setActiveHref={setActiveHref}
-/>
+          <NotebookLinks
+          links={tutorialLinks}
+          onNavigate={onNavigate}
+          activeHref={activeHref}
+          setActiveHref={setActiveHref}
+          />
         </NavAccordion>
       </div>
 
       <div className="mt-3">
         <NavAccordion iconComponent={spatulaIcon} title="Cookbook" defaultOpen={isInCookbook}>
-        <NotebookLinks
-         links={cookbookLinks}
-         onNavigate={onNavigate}
-         activeHref={activeHref}
-         setActiveHref={setActiveHref}
-/>
+          <NotebookLinks
+          links={cookbookLinks}
+          onNavigate={onNavigate}
+          activeHref={activeHref}
+          setActiveHref={setActiveHref}
+          />
         </NavAccordion>
       </div>
 
       <div className="mt-3">
         <NavAccordion iconComponent={codeIcon} title="API Reference" defaultOpen={isInApi}>
-        <NotebookLinks
-         links={apiLinks}
-         onNavigate={onNavigate}
-         activeHref={activeHref}
-         setActiveHref={setActiveHref}
-/>
+          <NotebookLinks
+          links={apiLinks}
+          onNavigate={onNavigate}
+          activeHref={activeHref}
+          setActiveHref={setActiveHref}
+          />
+          <a href="https://guidance-ai.github.io/llguidance/llg-go-brrr" target="_none">llguidance</a>
         </NavAccordion>
       </div>
     </div>
