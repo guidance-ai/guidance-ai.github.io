@@ -136,7 +136,7 @@ function SideNav({
           activeHref={activeHref}
           setActiveHref={setActiveHref}
           />
-          <a href="https://guidance-ai.github.io/llguidance/llg-go-brrr" target="_none">llguidance</a>
+          {/* <a href="https://guidance-ai.github.io/llguidance/llg-go-brrr" target="_none">llguidance</a> */}
         </NavAccordion>
       </div>
     </div>
