@@ -66,6 +66,7 @@ function SideNav({
     // "Constrained Decoding": "unknown_notebook",
     "Art of Prompt Design: Clear Syntax": "use_clear_syntax",
     "Art of Prompt Design: Prompt Boundaries and Token Healing": "token_healing",
+    "Regex Constraints": "regex_constraints",
     // "Guidance Acceleration Deep Dive": "guidance_acceleration",
     // "Multimodal Inputs": "unknown_notebook"
   };
