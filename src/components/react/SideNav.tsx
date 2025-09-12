@@ -67,12 +67,14 @@ function SideNav({
     "Art of Prompt Design: Clear Syntax": "use_clear_syntax",
     "Art of Prompt Design: Prompt Boundaries and Token Healing": "token_healing",
     "Regex Constraints": "regex_constraints",
+    "JSON Syntax": "guaranteeing_valid_syntax",
     "Tool Calling": "tool_calling",
     // "Guidance Acceleration Deep Dive": "guidance_acceleration",
     // "Multimodal Inputs": "unknown_notebook"
   };
 
   const cookbookLinks: NotebookLink = {
+    "Anachronism Classifier": "anachronism",
     // "HTML Scraping": "unknown_notebook",
     // "Building Your First Website": "html_cookbook",
     // "Multimodal Test": "multimodal_examples",
