@@ -4,7 +4,9 @@ export const notebookNames = [
   "token_healing",
   "use_clear_syntax",
   "regex_constraints",
-  "tool_calling"
+  "tool_calling",
+  "guaranteeing_valid_syntax",
+  "anachronism",
 ] as const;
 
 // Creates a type that is the union of all indexible noteobok names
